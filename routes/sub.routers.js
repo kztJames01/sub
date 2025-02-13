@@ -1,16 +1,20 @@
 import { Router } from "express";
+import { createSub, getSub, getAllSubs, getSubDetails } from "../controllers/sub.controller.js";
+import authorize from "../middleware/auth.middlware.js";
+import isAdmin from "../middleware/admin.middleware.js";
 
 const subRouter = Router();
 
-subRouter.get("/", (req, res) => res.send({ title: "GET All Sub"}));
-subRouter.get("/:id", (req, res) => res.send({ title: "GET Sub Details"}));
-subRouter.post("/", (req, res) => res.send({ title: "Create Sub"}));
-subRouter.put("/:id", (req, res) => res.send({ title: "Update Sub"}));
-subRouter.delete("/:id", (req, res) => res.send({ title: "Delete Sub"}));
+// Admin routes
+subRouter.get("/", authorize, isAdmin, getAllSubs);
+subRouter.get("/:id", authorize, isAdmin, getSubDetails);
 
-subRouter.get("/user/:id", (req, res) => res.send({ title: "Get Sub of User"}));
-subRouter.delete("/user/:id", (req, res) => res.send({ title: "Cancel Sub"}));
-subRouter.get("/upcoming-renewals", (req, res) => res.send({ title: "Get All Upcoming Renewals"}));
-
+// User routes
+subRouter.post("/", authorize, createSub);
+subRouter.get("/user/:id", authorize, getSub);
+subRouter.put("/:id", authorize, (req, res) => res.send({ title: "Update Sub"}));
+subRouter.delete("/:id", authorize, (req, res) => res.send({ title: "Delete Sub"}));
+subRouter.delete("/user/:id", authorize, (req, res) => res.send({ title: "Cancel Sub"}));
+subRouter.get("/upcoming-renewals", authorize, (req, res) => res.send({ title: "Get All Upcoming Renewals"}));
 
 export default subRouter;
