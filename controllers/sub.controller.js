@@ -17,7 +17,7 @@ export const createSub = async (req, res, next) => {
     }
 }
 
-export const getSub = async (req, res, next) => {
+export const getSubs = async (req, res, next) => {
     try {
         if(req.user.id !== req.params.id){
             const error = new Error("Unauthorized. Only the owner can access this sub");
@@ -34,7 +34,7 @@ export const getSub = async (req, res, next) => {
     }
 }
 
-export const getSubs = async (req, res, next) => {
+export const getUserSubs = async (req, res, next) => {
     try {
         const subs = await SubModel.find({user: req.params.id});
         res.status(200).json({

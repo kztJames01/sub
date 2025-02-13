@@ -28,3 +28,16 @@ const authorize = async (req, res, next) => {
 };
 
 export default authorize;
+
+export const adminOnly = async (req, res, next) => {
+    try {
+        if (!req.user || req.user.role !== 'admin') {
+            const error = new Error('Not authorized as admin');
+            error.status = 403;
+            throw error;
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+};

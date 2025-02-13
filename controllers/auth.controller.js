@@ -115,3 +115,54 @@ export const signOut = async (req, res) => {
         message: "User logged out successfully"
     });
 };
+
+export const adminSignIn = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            throw new Error('Please provide email and password');
+        }
+
+        // Check if user exists
+        const user = await UserModel.findOne({ email });
+        if (!user || user.role !== 'admin') {
+            const error = new Error("You are not admin. Only admin can sign in");
+            error.status = 401;
+            throw error;
+        }
+
+        // Check password   
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            const error = new Error("Invalid credentials");
+            error.status = 401;
+            throw error;
+        }
+
+        // Create token with admin role
+        const token = jwt.sign(
+            { 
+                userId: user._id,
+                role: user.role 
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRE_TIME }
+        );
+
+        // Remove password from response
+        const userResponse = user.toObject();
+        delete userResponse.password;
+
+        res.status(200).json({
+            success: true,
+            message: "Admin logged in successfully",
+            data: {
+                user: userResponse,
+                token
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
