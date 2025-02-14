@@ -124,15 +124,15 @@ export const adminSignIn = async (req, res, next) => {
             throw new Error('Please provide email and password');
         }
 
-        // Check if user exists
+        // Check if user exists and is admin
         const user = await UserModel.findOne({ email });
         if (!user || user.role !== 'admin') {
-            const error = new Error("You are not admin. Only admin can sign in");
+            const error = new Error("Not authorized as admin");
             error.status = 401;
             throw error;
         }
 
-        // Check password   
+        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             const error = new Error("Invalid credentials");
@@ -144,7 +144,7 @@ export const adminSignIn = async (req, res, next) => {
         const token = jwt.sign(
             { 
                 userId: user._id,
-                role: user.role 
+                role: user.role  // Include role in token
             },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRE_TIME }

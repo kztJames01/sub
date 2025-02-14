@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { createSub, getSubs, getUserSubs, getUpcomingRenewals, cancelSub, subDelete, updateSub } from "../controllers/sub.controller.js";
-import { authorize ,adminOnly} from "../middleware/auth.middlware.js";
+import { createSub, getUserSubs, getSubs } from "../controllers/sub.controller.js";
+import authorize, { adminOnly } from "../middleware/auth.middlware.js";
 
 
 const subRouter = Router();
 
 // Admin routes
-subRouter.get("/admin/subs", authorize, adminOnly, getAllSubs);
-subRouter.get("/admin/subs/:id", authorize, adminOnly, getSubDetails);
+subRouter.get("/admin/subs", authorize, adminOnly, getSubs);
+subRouter.get("/admin/subs/:id", authorize, adminOnly, getSubs);
 
 // User routes
 subRouter.post("/", authorize, createSub);
