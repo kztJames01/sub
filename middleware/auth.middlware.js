@@ -49,15 +49,5 @@ const authorize = async (req, res, next) => {
     }
 };
 
-export const adminOnly = async (req, res, next) => {
-    try {
-        if (!req.user || req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Not authorized as admin' });
-        }
-        next();
-    } catch (error) {
-        next(error);
-    }
-};
 
 export default authorize;
