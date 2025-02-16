@@ -29,3 +29,30 @@ export const getUser = async (req, res, next) => {
         next(error);
     }
 }
+
+export const updateUser = async (req, res, next) => {
+    try {
+        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const deleteUser = async (req, res, next) => {
+    try {
+        const user = await UserModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        next(error);
+    }
+}
