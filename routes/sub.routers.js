@@ -6,8 +6,8 @@ import adminOnly from "../middleware/admin.middleware.js";
 const subRouter = Router();
 
 // Admin routes
-subRouter.get("/admin/subs", authorize, adminOnly, getAdminSubs);
-subRouter.delete("/admin/subs/:id", authorize, adminOnly, adminDeleteSub);
+subRouter.get("/admin/adminSubs", authorize, adminOnly, getAdminSubs);
+subRouter.delete("/admin/adminSubs/:id", authorize, adminOnly, adminDeleteSub);
 
 // User routes
 subRouter.post("/", authorize, createSub);

@@ -92,7 +92,7 @@ export const getAdminSubs = async (req, res, next) => {
             error.status = 401;
             throw error;
         }
-        const sub = await SubModel.find({status: 'active'});
+        const sub = await SubModel.find({status: 'active'|| 'expired'});
         res.status(200).json({
             success: true,
             data: sub

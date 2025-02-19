@@ -5,7 +5,8 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import connectToDatabase from "./database/mongodb.js";
 import subRouter from "./routes/sub.routers.js";
 import userRouter from "./routes/user.routes.js";
-import authRouter from "./routes/auth.routes.js";  
+import authRouter from "./routes/auth.routes.js"; 
+import workflowRouter from "./routes/workflow.routes.js"; 
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";  
 const app = express();
 
@@ -22,6 +23,7 @@ const app = express();
   app.use("/api/v1/subs", subRouter);
   app.use("/api/v1/users", userRouter);
   app.use("/api/v1/auth", authRouter);
+  app.use("/api/v1/workflow", workflowRouter);
 
   // Error handling
   app.use(errorMiddleware);
