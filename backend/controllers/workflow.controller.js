@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 
 const { serve } = require("@upstash/workflow/express");
 
-const Reminders = [7,3, 1];
+const Reminders = [7,5,3, 1];
 
 export const sendReminder = serve(async (context) => {
 

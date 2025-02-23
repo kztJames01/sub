@@ -74,6 +74,12 @@ export const generateEmailTemplate = ({
       generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 7 }),
     },
     {
+      label: "5 days before renewal",
+      generateSubject: (data) =>
+        `⏳ ${data.subscriptionName} Renews in 5 Days – Stay Subscribed!`,
+      generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 5 }),
+    },
+    {
       label: "3 days before renewal",
       generateSubject: (data) =>
         `⏳ ${data.subscriptionName} Renews in 3 Days – Stay Subscribed!`,

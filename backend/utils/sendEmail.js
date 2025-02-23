@@ -1,17 +1,6 @@
 import dayjs from "dayjs";
 import { emailTemplates } from "../utils/email-template.js";
-import nodemailer from 'nodemailer';
-import { ACCOUNT_EMAIL, EMAIL_PASSWORD } from '../config/env.js';
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587, 
-  secure: true, 
-  auth: {
-    user: ACCOUNT_EMAIL,
-    pass: EMAIL_PASSWORD
-  }
-});
+import transporter from "../config/nodemailer.js";
 export const sendReminderEmail = async ({ type, subscription }) => {
     
     if (!type || !subscription) throw new Error("Missing required fields");
@@ -25,9 +14,10 @@ export const sendReminderEmail = async ({ type, subscription }) => {
     const mailInfo = {
         userName: subscription.user.name,
         subscriptionName: subscription.name,
-        subscriptionPrice: `${subscription.currency}${subscription.price} (${subscription.frequency})`,
-        paymentMethod: subscription.user.paymentMethod,
-        subscriptionRenewalDate: dayjs(subscription.renewalDate).format('DD/MM/YYYY'),
+        planName: subscription.frequency,
+        price: `${subscription.currency} ${subscription.price} (${subscription.frequency})`,
+        paymentMethod: subscription.paymentMethod,
+        renewalDate: dayjs(subscription.renewalDate).format('DD/MM/YYYY'),
     }
     const message = template.generateBody(mailInfo);
     const subject = template.generateSubject(mailInfo);
