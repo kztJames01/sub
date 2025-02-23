@@ -23,7 +23,7 @@ const app = express();
   app.use("/api/v1/subs", subRouter);
   app.use("/api/v1/users", userRouter);
   app.use("/api/v1/auth", authRouter);
-  app.use("/api/v1/workflow", workflowRouter);
+  app.use("/api/v1/workflows", workflowRouter);
 
   // Error handling
   app.use(errorMiddleware);

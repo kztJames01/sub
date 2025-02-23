@@ -1,5 +1,6 @@
 import  SubModel  from "../models/sub.models.js";
-
+import { workflowClient } from "../config/upstash.js";
+import { SERVER_URL } from "../config/env.js";
 
 export const createSub = async (req, res, next) => {
     try {
@@ -7,12 +8,22 @@ export const createSub = async (req, res, next) => {
             ...req.body,
             user: req.user._id
         });
-
+        await workflowClient.trigger({
+            url: `${SERVER_URL}/api/v1/workflows/reminder`,
+            body: {
+                subscriptionId: sub.id
+            },
+            headers: {
+                'content-type': 'application/json'
+            },
+            retries: 0
+        });
         res.status(201).json({
             success: true,
-            data: sub
+            data: {sub}
         });
     } catch (error) {
+        console.log(error);
         next(error);
     }
 }
