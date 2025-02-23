@@ -1,4 +1,4 @@
-import { Router } from "../node_modules/express/index.js";
+import { Router } from "express";
 import { signUp, signIn, signOut, adminSignIn } from "../controllers/auth.controller.js";
 import  authorize from "../middleware/auth.middlware.js";
 import adminOnly from "../middleware/admin.middleware.js";

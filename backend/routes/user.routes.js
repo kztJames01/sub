@@ -1,4 +1,4 @@
-import { Router } from "../node_modules/express/index.js";
+import { Router } from "express";
 import { getUsers, getUser, updateUser, deleteUser } from "../controllers/user.controller.js";
 import authorize from "../middleware/auth.middlware.js";
 const userRouter = Router();
