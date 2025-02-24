@@ -8,6 +8,7 @@ import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js"; 
 import workflowRouter from "./routes/workflow.routes.js"; 
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";  
+import cors from 'cors';
 const app = express();
 
 // Connect to MongoDB first
@@ -15,6 +16,10 @@ const app = express();
   await connectToDatabase();
   
   // Middleware
+  app.use(cors({
+    origin: "http://localhost:3001", // Allow requests from Next.js
+    credentials: true, // If you plan to use cookies or auth headers
+  }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());

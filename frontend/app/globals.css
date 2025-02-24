@@ -17,8 +17,8 @@
 }
 @layer base{
   :root {
-    --background: 0 0% 100%; /* 252422 in RGB */
-    --foreground: 222.2 84% 4.9%;
+    --background: #252422; /* 252422 in RGB */
+    --foreground: #ffffff;
     --primary: 222.2 47.4% 11.2%; /* Green */
     --secondary: 210 40% 96.1%;
     --card: 0 0% 100%;
@@ -79,8 +79,8 @@
 }
 
 body {
-  background-color: rgb(var(--background));
-  color: rgb(var(--foreground));
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-antonio);
 }
 .glassmorphism {
@@ -90,19 +90,8 @@ body {
   border-radius: 12px;
 }
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}

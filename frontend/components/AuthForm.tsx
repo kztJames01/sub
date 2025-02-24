@@ -15,7 +15,7 @@ import {
     from "./ui/form";
 import { authFormSchema } from "@/lib/utils";
 import CustomInput from "./CustomInput";
-import { signIn, createUser } from "@/lib/action/user.actions";
+import { signUpUser, signInUser } from "@/api/auth";
 import { Card, CardContent } from "./ui/card";
 const AuthForm = ({ type }: AuthFormProps) => {
     const [user, setUser] = useState(null);
@@ -44,7 +44,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     password: data.password!,
                     confirmPassword: data.confirmPassword!,
                 }
-                const newUser = await createUser(userData);
+                const newUser = await signUpUser(userData);
                 if (newUser) {
                     router.push('/sign-in');
                 }
@@ -54,7 +54,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 }
             }
             if (type === 'sign-in') {
-                const response = await signIn({
+                const response = await signInUser({
                     email: data.email!,
                     password: data.password!,
                 });
@@ -75,7 +75,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     < div className="auth-form glassmorphism p-8 w-full" >
                         <header className='flex flex-col gap-5 md:gap-8'>
                             <Link href='/' className='flex mb-4  cursor-pointer items-center gap-2'>
-                                <Image src="/logo/mobile-logo1.png" width={34} height={34} alt="NxtGen logo" className="size=[24px] max-xl:size-14" />
+                                <Image src="/photo.jpg" width={34} height={34} alt="NxtGen logo" className="size=[24px] max-xl:size-14" />
                                 <h1 className=' font-bold text-24 font-robo text-primary px-4 '>NxtGen</h1>
                             </Link>
                             <div className='flex flex-col gap-1 md:gap-3 '>
@@ -127,7 +127,6 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                                         />
                                                     </>
                                                 )}
-
 
                                                 <Button type="submit" disabled={loading} className="form-btn w-full">
                                                     {loading ?
@@ -189,7 +188,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     </div >
                     <div className="relative hidden bg-muted md:block">
                         <img
-                            src="/home.jpg"
+                            src="/photo1.jpg"
                             alt="Image"
                             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                         />
