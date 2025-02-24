@@ -71,3 +71,20 @@ declare interface Note {
     content: string;
     timestamp: string;
 }
+
+declare interface Subscription {
+    _id: string;
+    name: string;
+    price: number;
+    currency: string;
+    frequency: string;
+    category: string;
+    paymentMethod: string;
+    status: string;
+    startDate: string;
+    renewalDate: string;
+}
+
+declare interface AdditionProps {
+    onSubmit: (data: Subscription) => void; 
+}
