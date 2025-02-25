@@ -38,6 +38,7 @@ export const updateUser = async (req, res, next) => {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(plainPassword, salt);
+
         const user = await UserModel.findByIdAndUpdate(req.params.id, {
             name,
             email,

@@ -17,7 +17,7 @@ const app = express();
   
   // Middleware
   app.use(cors({
-    origin: "http://localhost:3001", // Allow requests from Next.js
+    origin: "http://localhost:3000", // Allow requests from Next.js
     credentials: true, // If you plan to use cookies or auth headers
   }));
   app.use(express.json());

@@ -9,8 +9,14 @@ export const signUp = async (req, res, next) => {
         session = await mongoose.startSession();
         session.startTransaction();
 
-        const { name, email, password: plainPassword } = req.body;
-        const existingUser = await UserModel.findOne({ email });
+        const { name, email, password: plainPassword, confirmPassword: plainPassword2 } = req.body;
+        const existingUser = await UserModel.findOne({ email, name });
+
+        if(plainPassword !== plainPassword2){
+            const error = new Error("Passwords do not match");
+            error.status = 400;
+            throw error;
+        }
 
         if(existingUser){
             const error = new Error("User already exists");
