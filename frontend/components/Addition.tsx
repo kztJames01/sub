@@ -4,7 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Subscription, subscriptionSchema } from "@/lib/utils";
+import { subscriptionSchema } from "@/lib/utils";
+
 
 const AddSubscriptionForm = ({ onSubmit }: { onSubmit: (data: Subscription) => void }) => {
   const form = useForm({
@@ -22,7 +23,7 @@ const AddSubscriptionForm = ({ onSubmit }: { onSubmit: (data: Subscription) => v
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit()} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
@@ -60,3 +61,5 @@ const AddSubscriptionForm = ({ onSubmit }: { onSubmit: (data: Subscription) => v
     </Form>
   );
 };
+
+export default AddSubscriptionForm;

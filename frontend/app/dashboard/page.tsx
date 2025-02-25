@@ -9,7 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import SubTable from "@/components/SubTable";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,20 +25,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Trash2, Edit, TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import BarChartComponent from "@/components/BarChart";
 import { Progress } from "@/components/ui/progress";
 import { subscriptionSchema } from "@/lib/utils";
 
 type Subscription = z.infer<typeof subscriptionSchema>;
 
-const initialSubscriptions: Subscription[] = [
-  { name: "Netflix", price: 15.99, renewalDate: "2025-03-01" },
-  { name: "Spotify", price: 9.99, renewalDate: "2025-03-15" },
-  { name: "Gym Membership", price: 45.00, renewalDate: "2025-03-10" },
-];
 
 export default function Dashboard() {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>(initialSubscriptions);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
 
@@ -46,7 +42,7 @@ export default function Dashboard() {
     resolver: zodResolver(subscriptionSchema),
     defaultValues: {
       name: "",
-      cost: 0,
+      price: 0,
       renewalDate: "",
     },
   });
@@ -82,7 +78,7 @@ export default function Dashboard() {
   };
 
   // Calculate total monthly cost
-  const totalMonthlyCost = subscriptions.reduce((total, sub) => total + sub.cost, 0);
+  const totalMonthlyCost = subscriptions.reduce((total, sub) => total + sub.price, 0);
 
   // Calculate average monthly cost
   const averageMonthlyCost = totalMonthlyCost / subscriptions.length || 0;
@@ -90,7 +86,7 @@ export default function Dashboard() {
   // Prepare data for the bar chart
   const chartData = subscriptions.map((sub) => ({
     name: sub.name,
-    cost: sub.cost,
+    price: sub.price,
     average: averageMonthlyCost,
   }));
 
@@ -138,10 +134,10 @@ export default function Dashboard() {
                     />
                     <FormField
                       control={form.control}
-                      name="cost"
+                      name="price"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Cost ($)</FormLabel>
+                          <FormLabel>Price ($)</FormLabel>
                           <FormControl>
                             <Input
                               type="number"
@@ -179,75 +175,20 @@ export default function Dashboard() {
         </CardHeader>
         <CardContent>
           {/* Bar Chart */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>Monthly Subscription Cost vs Average</CardTitle>
-              <CardDescription>Comparison of individual subscription costs with the average monthly cost.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
-                  <CartesianGrid vertical={false} />
-                  <XAxis dataKey="name" tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Bar dataKey="cost" fill="hsl(var(--chart-1))" radius={4} />
-                  <Bar dataKey="average" fill="hsl(var(--chart-2))" radius={4} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+          <BarChartComponent chartData={chartData} />
 
           {/* Subscription Table */}
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Cost ($)</TableHead>
-                <TableHead>Renewal Date</TableHead>
-                <TableHead>Days Left</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-            {subscriptions.map((sub, index) => {
-                const daysLeft = calculateDaysLeft(sub.renewalDate);
-                const progress = ((30 - daysLeft) / 30) * 100; // Assuming 30 days as the max for the progress bar
-
-                return (
-                  <TableRow key={index}>
-                    <TableCell>{sub.name}</TableCell>
-                    <TableCell>{sub.cost.toFixed(2)}</TableCell>
-                    <TableCell>{sub.renewalDate}</TableCell>
-                    <TableCell>
-                      <Progress value={progress} className="h-2 mb-1" /> {/* Use the Progress component */}
-                      <span className="text-sm">{daysLeft} days left</span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEdit(sub)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(sub)}
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-          {subscriptions.length === 0 && (
-            <p className="text-center text-gray-500 mt-4">No subscriptions added yet.</p>
-          )}
+          <SubTable
+            subscriptions={subscriptions}
+            calculateDaysLeft={calculateDaysLeft}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+          {
+            subscriptions.length === 0 && (
+              <p className="text-center text-gray-500 mt-4">No subscriptions added yet.</p>
+            )
+          }
         </CardContent>
       </Card>
     </div>
