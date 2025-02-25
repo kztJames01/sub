@@ -10,14 +10,19 @@ declare type LoginUser = {
     password: string;
 };
 
-declare type SignUpParams = {
+declare type SignUpUser = {
     firstName: string;
     lastName: string;
     confirmPassword: string;
     email: string;
     password: string;
-    //phone: string;
 };
+
+interface ApiResponse {
+    success: boolean;
+    message?: string;
+    data?: any; 
+  }
 
 declare type SearchParamProps = {
     params: { [key: string]: string };
@@ -85,7 +90,7 @@ declare interface Subscription {
 }
 
 declare interface AdditionProps {
-    onSubmit: (data: Subscription) => {}; 
+    onSubmit: (data: Subscription) => void; 
 }
 
 interface SubTableProps{
