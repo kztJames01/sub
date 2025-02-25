@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { subscriptionSchema } from "@/lib/utils";
 
 
-const AddSubscriptionForm = ({ onSubmit }: { onSubmit: (data: Subscription) => void }) => {
+const AddSubscriptionForm = ({ onSubmit }: AdditionProps) => {
   const form = useForm({
     resolver: zodResolver(subscriptionSchema),
     defaultValues: {
@@ -23,7 +23,7 @@ const AddSubscriptionForm = ({ onSubmit }: { onSubmit: (data: Subscription) => v
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit()} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
