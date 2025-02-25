@@ -10,7 +10,6 @@ declare type LoginUser = {
     password: string;
 };
 
-
 declare type SignUpParams = {
     firstName: string;
     lastName: string;
@@ -86,5 +85,12 @@ declare interface Subscription {
 }
 
 declare interface AdditionProps {
-    onSubmit: (data: Subscription) => void; 
+    onSubmit: (data: Subscription) => {}; 
+}
+
+interface SubTableProps{
+    subscriptions: Subscription[];
+    calculateDaysLeft: (renewalDate: string) => number;
+    handleEdit: (subscription: Subscription) => void;
+    handleDelete: (subscription: Subscription) => void;
 }
