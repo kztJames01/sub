@@ -68,25 +68,25 @@ export const generateEmailTemplate = ({
   
   export const emailTemplates = [
     {
-      label: "7 days before reminder",
+      label: "7 days before renewal",
       generateSubject: (data) =>
         `📅 Reminder: Your ${data.subscriptionName} Subscription Renews in 7 Days!`,
       generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 7 }),
     },
     {
-      label: "5 days before reminder",
+      label: "5 days before renewal",
       generateSubject: (data) =>
         `⏳ ${data.subscriptionName} Renews in 5 Days – Stay Subscribed!`,
       generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 5 }),
     },
     {
-      label: "2 days before reminder",
+      label: "3 days before renewal",
       generateSubject: (data) =>
-        `🚀 2 Days Left!  ${data.subscriptionName} Subscription Renewal`,
-      generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 2 }),
+        `⏳ ${data.subscriptionName} Renews in 3 Days – Stay Subscribed!`,
+      generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 3 }),
     },
     {
-      label: "1 days before reminder",
+      label: "1 days before renewal",
       generateSubject: (data) =>
         `⚡ Final Reminder: ${data.subscriptionName} Renews Tomorrow!`,
       generateBody: (data) => generateEmailTemplate({ ...data, daysLeft: 1 }),

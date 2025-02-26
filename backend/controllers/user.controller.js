@@ -1,4 +1,6 @@
 import UserModel from "../models/user.models.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const getUsers = async (req, res, next) => {
     try {
@@ -32,13 +34,30 @@ export const getUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
     try {
-        const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
+        const {name, email, password: plainPassword} = req.body;
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(plainPassword, salt);
+
+        const user = await UserModel.findByIdAndUpdate(req.params.id, {
+            name,
+            email,
+            password: hashedPassword
+        }, {
             new: true,
             runValidators: true
-        });
-        res.status(200).json({
+        })
+
+        // Remove password from response
+        const userResponse = user.toObject();
+        delete userResponse.password;
+
+        res.status(201).json({
             success: true,
-            data: user
+            message: "User updated successfully",
+            data: {
+                user: userResponse
+            }
         });
     } catch (error) {
         next(error);

@@ -13,6 +13,7 @@ export default {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        border: "var(--border)",
       },
       
     },

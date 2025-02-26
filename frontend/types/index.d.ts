@@ -10,15 +10,19 @@ declare type LoginUser = {
     password: string;
 };
 
-
-declare type SignUpParams = {
+declare type SignUpUser = {
     firstName: string;
     lastName: string;
     confirmPassword: string;
     email: string;
     password: string;
-    //phone: string;
 };
+
+interface ApiResponse {
+    success: boolean;
+    message?: string;
+    data?: any; 
+  }
 
 declare type SearchParamProps = {
     params: { [key: string]: string };
@@ -70,4 +74,28 @@ declare interface Note {
     id: number;
     content: string;
     timestamp: string;
+}
+
+declare interface Subscription {
+    _id: string;
+    name: string;
+    price: number;
+    currency: string;
+    frequency: string;
+    category: string;
+    paymentMethod: string;
+    status: string;
+    startDate: string;
+    renewalDate: string;
+}
+
+declare interface AdditionProps {
+    onSubmit: (data: Subscription) => void; 
+}
+
+interface SubTableProps{
+    subscriptions: Subscription[];
+    calculateDaysLeft: (renewalDate: string) => number;
+    handleEdit: (subscription: Subscription) => void;
+    handleDelete: (subscription: Subscription) => void;
 }
