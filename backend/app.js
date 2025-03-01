@@ -13,12 +13,10 @@ const app = express();
 
 // Connect to MongoDB first
 (async () => {
-  await connectToDatabase();
+  await connectToDatabase()
   
-  // Middleware
   app.use(cors({
-    origin: "http://localhost:3000", // Allow requests from Next.js
-    credentials: true, // If you plan to use cookies or auth headers
+    origin: "http://10.17.36.62:3000",
   }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -41,7 +39,6 @@ const app = express();
       console.log(`Server running on http://localhost:${PORT}`);
   });
 
-  // Handle unhandled promise rejections
   process.on('unhandledRejection', (err) => {
       console.log('UNHANDLED REJECTION! Shutting down...');
       console.log(err.name, err.message);
