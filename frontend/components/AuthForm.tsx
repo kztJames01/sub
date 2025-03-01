@@ -45,12 +45,13 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     password: data.password!,
                     confirmPassword: data.confirmPassword!,
                 }
-                const newUser = await signUpUser(userData);
-                if (newUser) {
-                    router.push('/sign-in');
-                }
-                else {
-                    console.log('error');
+                try{
+                    const newUser = await signUpUser(userData);
+                    if (newUser) {
+                        router.push('/sign-in');
+                    }
+                }catch(error){
+                    console.error('Sign-up error:', error);
                     redirect('/sign-up');
                 }
             }
