@@ -14,8 +14,8 @@ const BarChartComponent = ({ chartData }: { chartData: any }) => {
                   <CartesianGrid vertical={false} />
                   <XAxis dataKey="name" tickLine={false} axisLine={false} />
                   <Tooltip />
-                  <Bar dataKey="cost" fill="hsl(var(--chart-1))" radius={4} />
-                  <Bar dataKey="average" fill="hsl(var(--chart-2))" radius={4} />
+                  <Bar dataKey="cost" fill="var(--chart-1)" radius={4} />
+                  <Bar dataKey="average" fill="var(--chart-2)" radius={4} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>

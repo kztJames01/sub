@@ -8,8 +8,6 @@ export default function Home() {
   return (
     <>
       <div>
-        {/* Animation Container (Left 50%) */}
-        {/* Content Container (Left 50%) */}
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center w-full lg:w-[50%] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
           <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
             <div className="flex flex-col items-center justify-center text-center bg-white/10 backdrop-blur-sm p-8 rounded-lg shadow-lg max-w-xl mx-auto">

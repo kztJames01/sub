@@ -34,13 +34,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&display=swap"
-          as="style"
-        />
-      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${antonio.variable} antialiased`}
       >

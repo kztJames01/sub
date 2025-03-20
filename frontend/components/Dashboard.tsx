@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -87,7 +88,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-background text-foreground">
+    <div className="min-h-screen p-8 ">
       <Card className="max-w-4xl mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Subscription Tracker</CardTitle>
@@ -97,14 +98,18 @@ export default function Dashboard() {
             </span>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="default" onClick={() => setIsDialogOpen(true)}>Add Subscription</Button>
+                <Button className="form-btn" onClick={() => setIsDialogOpen(true)}>Add Subscription</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>
                     {editingSubscription ? "Edit Subscription" : "Add New Subscription"}
                   </DialogTitle>
+                  <DialogDescription>
+                  {editingSubscription ? "Edit the details of the subscription" : "Add a new subscription"}
+                </DialogDescription>
                 </DialogHeader>
+                
                 <Addition onSubmit={onSubmit} />
               </DialogContent>
             </Dialog>
