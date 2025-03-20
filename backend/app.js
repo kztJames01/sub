@@ -13,58 +13,66 @@ import cors from "cors";
 const app = express();
 
 (async () => {
-  try {
-    await connectToDatabase();
+  await connectToDatabase()
 
-    // Middleware
-    app.use(
-      cors({
-        origin: "http://localhost:3000",
-        credentials: true,
-      })
-    );
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: false }));
-    app.use(cookieParser());
-    app.use(arcjetMiddleware);
+  app.use(cors({
+    origin: "http://10.17.36.62:3000",
+  }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(arcjetMiddleware);
+  // Routes
+  app.use("/api/v1/subs", subRouter);
+  app.use("/api/v1/users", userRouter);
+  app.use("/api/v1/auth", authRouter);
+  app.use("/api/v1/workflows", workflowRouter);
 
-    // Routes
-    app.use("/api/v1/subs", subRouter);
-    app.use("/api/v1/users", userRouter);
-    app.use("/api/v1/auth", authRouter);
-    app.use("/api/v1/workflows", workflowRouter);
+  // Middleware
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(arcjetMiddleware);
 
-    // Error handling
-    app.use(errorMiddleware);
+  // Routes
+  app.use("/api/v1/subs", subRouter);
+  app.use("/api/v1/users", userRouter);
+  app.use("/api/v1/auth", authRouter);
+  app.use("/api/v1/workflows", workflowRouter);
 
-    app.get("/", (req, res) => {
-      res.send("Hello World!");
+  // Error handling
+  app.use(errorMiddleware);
+
+  app.get("/", (req, res) => {
+    res.send("Hello World!");
+  });
+
+  const server = app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+
+  process.on("unhandledRejection", (err) => {
+    console.log("UNHANDLED REJECTION! Shutting down...");
+    console.error(err);
+    server.close(() => {
+      process.exit(1);
     });
+  });
 
-    const server = app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+
+  process.on("SIGTERM", () => {
+    console.log("SIGTERM received. Closing server...");
+    server.close(() => {
+      console.log("Server closed.");
+      process.exit(0);
     });
-
-    process.on("unhandledRejection", (err) => {
-      console.log("UNHANDLED REJECTION! Shutting down...");
-      console.error(err);
-      server.close(() => {
-        process.exit(1);
-      });
-    });
-
-
-    process.on("SIGTERM", () => {
-      console.log("SIGTERM received. Closing server...");
-      server.close(() => {
-        console.log("Server closed.");
-        process.exit(0);
-      });
-    });
-  } catch (err) {
-    console.error("Startup error:", err);
-    process.exit(1);
-  }
+  });
 })();
 
 export default app;
