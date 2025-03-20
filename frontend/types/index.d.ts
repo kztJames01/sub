@@ -93,7 +93,7 @@ declare interface AdditionProps {
     onSubmit: (data: Subscription) => void; 
 }
 
-interface SubTableProps{
+declare interface SubTableProps{
     subscriptions: Subscription[];
     calculateDaysLeft: (renewalDate: string) => number;
     handleEdit: (subscription: Subscription) => void;
