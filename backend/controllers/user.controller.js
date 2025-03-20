@@ -34,7 +34,7 @@ export const getUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
     try {
-        const {name, email, password: plainPassword} = req.body;
+        const {firstName, lastName, email, password: plainPassword} = req.body;
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(plainPassword, salt);

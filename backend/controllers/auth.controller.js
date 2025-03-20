@@ -9,8 +9,8 @@ export const signUp = async (req, res, next) => {
         session = await mongoose.startSession();
         session.startTransaction();
 
-        const { name, email, password: plainPassword, confirmPassword: plainPassword2 } = req.body;
-        const existingUser = await UserModel.findOne({ email, name });
+        const { firstName, lastName, email, password: plainPassword, confirmPassword: plainPassword2 } = req.body;
+        const existingUser = await UserModel.findOne({ email });
 
         if(plainPassword !== plainPassword2){
             const error = new Error("Passwords do not match");
@@ -29,7 +29,8 @@ export const signUp = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(plainPassword, salt);
 
         const newUser = await UserModel.create([{
-            name,
+            firstName,
+            lastName,
             email,
             password: hashedPassword
         }], { session });
@@ -56,6 +57,7 @@ export const signUp = async (req, res, next) => {
         });
         session.endSession();
     } catch (error) {
+        console.log("Error in signUp: ", error);
         if (session) {
             await session.abortTransaction();
         }
