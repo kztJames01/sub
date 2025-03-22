@@ -72,14 +72,14 @@ export const formatDateTime = (dateString: Date) => {
 };
 
 export const subscriptionSchema = z.object({
-    _id: z.string(),
+  id: z.string().optional(),
   name: z.string().min(3, "Subscription name is required"),
   price: z.number().min(0, "Price must be a positive number"),
   category: z.string().min(3, "Category is required"),
   paymentMethod: z.string().min(3, "Payment method is required"),
-  status: z.string().min(3, "Status is required"),
+  status: z.string().min(3, "Status is required").optional(),
   frequency: z.string().min(3, "Frequency is required"),
   currency: z.string().min(3, "Currency is required"),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Enter a valid date (YYYY-MM-DD)"),
-  renewalDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Enter a valid date (YYYY-MM-DD)"),
+  renewalDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 });

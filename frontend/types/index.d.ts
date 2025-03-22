@@ -77,20 +77,22 @@ declare interface Note {
 }
 
 declare interface Subscription {
-    _id: string;
+    id?: string | undefined;
     name: string;
     price: number;
     currency: string;
     frequency: string;
     category: string;
     paymentMethod: string;
-    status: string;
+    status?: string | undefined;
     startDate: string;
-    renewalDate: string;
+    renewalDate?: string | undefined;
 }
 
 declare interface AdditionProps {
     onSubmit: (data: Subscription) => void; 
+    form: UseFormReturn<Subscription, any, undefined>;
+    loading: boolean;
 }
 
 declare interface SubTableProps{
