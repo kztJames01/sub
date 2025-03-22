@@ -6,8 +6,8 @@ import adminOnly from "../middleware/admin.middleware.js";
 const authRouter = Router();
 
 // Public routes
-authRouter.post("/sign-up", signUp);
-authRouter.post("/sign-in", signIn);
+authRouter.post("/sign-up",signUp);
+authRouter.post("/sign-in",signIn);
 authRouter.post("/sign-out", authorize, signOut);
 
 // Protected routes

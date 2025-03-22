@@ -9,9 +9,9 @@ const authorize = async (req, res, next) => {
         
         let token;
 
-        if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-            token = req.headers.authorization.split(' ')[1];
-            console.log('Token received:', token ? `${token.slice(0, 10)}...` : 'none');
+        if(req.cookies.token) {
+            token = req.cookies.token;
+            console.log('Token received from cookie:', token ? `${token.slice(0, 10)}...` : 'none');
         }
 
         if(!token) {
