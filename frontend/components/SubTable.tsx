@@ -18,7 +18,7 @@ const SubTable = ({ subscriptions, calculateDaysLeft, handleEdit, handleDelete }
             </TableHeader>
             <TableBody>
                 {subscriptions.map((sub, index) => {
-                    const daysLeft = calculateDaysLeft(sub.renewalDate);
+                    const daysLeft = calculateDaysLeft(sub.renewalDate!);
                     const progress = ((30 - daysLeft) / 30) * 100; // Assuming 30 days as the max for the progress bar
 
                     return (
