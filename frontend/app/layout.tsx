@@ -15,12 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const antonio = Antonio({
-  subsets: ["latin"],
-  variable: "--font-antonio", // Define a CSS variable for Antonio
-  weight: "400", // Default weight
-});
-
 export const metadata: Metadata = {
   title: "Subscription Tracker",
   description: "AI Subscription Tracker",
@@ -35,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${antonio.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>

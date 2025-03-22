@@ -77,13 +77,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
                     <header className='flex flex-col gap-5 md:gap-8'>
                         <Link href='/' className='flex mb-4  cursor-pointer items-center gap-2'>
-                            <Image src="/photo.jpg" width={34} height={34} alt="NxtGen logo" className="size=[24px] max-xl:size-14" />
-                            <h1 className=' font-bold text-24 font-robo text-primary px-4 '>NxtGen</h1>
+                            <Image src="/mono.svg" width={100} height={100} alt="V3 Logo" className="size=[24px] max-xl:size-14" />
                         </Link>
-                        <div className='flex flex-col gap-1 md:gap-3 '>
+                        <div className='flex flex-col gap-1 md:gap-3 mb-6'>
                             <h1 className='text-24 lg:text-36 font-semibold text-primary'>
                                 {user ?
-                                    'Link Account' : type === 'sign-in' ? 'Hop into the MakerSpace' : 'Start Your Jounrney'
+                                    'Link Account' : type === 'sign-in' ? 'Optimize Your Financial Assets' : 'Start Your Journey'
                                 }
                                 <p className='text-16 font-normal text-secondary'>
                                     {user ?
@@ -142,7 +141,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                                         </form>
                                     </Form>
                                     <div className="relative  mt-6 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border"></div>
-                                    <div className="relative flex justify-center mt-3 z-10 bg-background px-2 text-muted-foreground">
+                                    <div className="relative flex justify-center mt-3 z-10 bg-transparent px-2 text-muted-foreground">
                                         Or continue with
                                     </div>
                                     <div className="grid grid-cols-3 gap-4 mt-3">
