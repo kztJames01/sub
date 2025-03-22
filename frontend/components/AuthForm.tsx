@@ -77,7 +77,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
                     <header className='flex flex-col gap-5 md:gap-8'>
                         <Link href='/' className='flex mb-4  cursor-pointer items-center gap-2'>
-                            <Image src="/mono.svg" width={100} height={100} alt="V3 Logo" className="size=[24px] max-xl:size-14" />
+                            <Image src="/v3lo.png" width={100} height={100} alt="V3 Logo" className="size=[24px] max-xl:size-14" />
+
                         </Link>
                         <div className='flex flex-col gap-1 md:gap-3 mb-6'>
                             <h1 className='text-24 lg:text-36 font-semibold text-primary'>

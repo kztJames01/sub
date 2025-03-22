@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import BarChartComponent from "@/components/BarChart";
 import { subscriptionSchema } from "@/lib/utils";
 import Addition from "@/components/Addition";
+import { createSubscription } from "@/lib/subAPI";
 type Subscription = z.infer<typeof subscriptionSchema>;
 
 
@@ -25,42 +26,67 @@ export default function Dashboard() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
-
-  // Form setup
-  const form = useForm<Subscription>({
+  const [loading, setIsLoading] = useState(false);
+  const form = useForm({
     resolver: zodResolver(subscriptionSchema),
     defaultValues: {
+      id: "",
       name: "",
       price: 0,
+      currency: "USD",
+      frequency: "monthly",
+      category: "entertainment",
+      paymentMethod: "credit-card",
+      status: "active",
       renewalDate: "",
+      startDate: new Date().toISOString().split("T")[0],
     },
   });
 
-  // Handle form submission
-  const onSubmit = (data: Subscription) => {
+  const onSubmit = async (data: Subscription) => {
+    setIsLoading(true);
     if (editingSubscription) {
-      // Update existing subscription
       const updatedSubscriptions = subscriptions.map((sub) =>
         sub === editingSubscription ? data : sub
       );
       setSubscriptions(updatedSubscriptions);
       setEditingSubscription(null);
     } else {
-      // Add new subscription
-      setSubscriptions([...subscriptions, data]);
+      const newSub = {
+        ...data,
+        id: `${data.name}-${data.startDate.toString()}`,
+        status: "active",
+      }
+      const startDate = new Date(data.startDate);
+      let renewalDate = new Date(startDate);
+
+      if (data.frequency === "monthly") {
+        renewalDate.setMonth(startDate.getMonth() + 1);
+      } else if (data.frequency === "yearly") {
+        renewalDate.setFullYear(startDate.getFullYear() + 1);
+      }
+
+      newSub.renewalDate = renewalDate.toISOString().split("T")[0];
+      try {
+        const newSubscription = await createSubscription(newSub);
+        console.log("Created new sub");
+        setSubscriptions([...subscriptions, newSubscription]);
+        setIsDialogOpen(false);
+        form.reset();
+      } catch (error) {
+        console.log(error)
+        console.error("Error creating subscription:", error);
+      }
     }
-    setIsDialogOpen(false);
-    form.reset();
   };
 
-  // Handle edit action
+
   const handleEdit = (subscription: Subscription) => {
     setEditingSubscription(subscription);
     form.reset(subscription);
     setIsDialogOpen(true);
   };
 
-  // Handle delete action
   const handleDelete = (subscription: Subscription) => {
     const updatedSubscriptions = subscriptions.filter((sub) => sub !== subscription);
     setSubscriptions(updatedSubscriptions);
@@ -106,11 +132,11 @@ export default function Dashboard() {
                     {editingSubscription ? "Edit Subscription" : "Add New Subscription"}
                   </DialogTitle>
                   <DialogDescription>
-                  {editingSubscription ? "Edit the details of the subscription" : "Add a new subscription"}
-                </DialogDescription>
+                    {editingSubscription ? "Edit the details of the subscription" : "Add a new subscription"}
+                  </DialogDescription>
                 </DialogHeader>
-                
-                <Addition onSubmit={onSubmit} />
+
+                <Addition onSubmit={onSubmit} form={form} loading={loading}/>
               </DialogContent>
             </Dialog>
           </div>
@@ -135,4 +161,8 @@ export default function Dashboard() {
       </Card>
     </div>
   );
+}
+
+function uuidv4() {
+  throw new Error("Function not implemented.");
 }
