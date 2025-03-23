@@ -15,18 +15,10 @@ const app = express();
 (async () => {
   await connectToDatabase()
 
-  app.use(cors({
-    origin: "http://10.17.36.62:3000",
-  }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(arcjetMiddleware);
-  // Routes
-  app.use("/api/v1/subs", subRouter);
-  app.use("/api/v1/users", userRouter);
-  app.use("/api/v1/auth", authRouter);
-  app.use("/api/v1/workflows", workflowRouter);
 
   // Middleware
   app.use(

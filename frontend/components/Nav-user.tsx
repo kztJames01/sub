@@ -28,6 +28,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { signOutUser } from "@/lib/authAPI"
 
 export function NavUser({
   user,
@@ -39,7 +40,15 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-
+  const handleSignout = async() => {
+    try{
+      await signOutUser();
+      localStorage.clear();
+      window.location.pathname = "/sign-in";
+    } catch (error) {
+      console.error('Error in handleSignout: ', error);
+    }
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -98,7 +107,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignout}>
               <LogOutIcon />
               Log out
             </DropdownMenuItem>

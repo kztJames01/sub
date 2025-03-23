@@ -41,6 +41,12 @@ export const signUp = async (req, res, next) => {
             { expiresIn: process.env.JWT_EXPIRE_TIME }
         );
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict'
+        });
+
         await session.commitTransaction();
 
         // Remove password from response
@@ -51,8 +57,7 @@ export const signUp = async (req, res, next) => {
             success: true,
             message: "User created successfully",
             data: {
-                user: userResponse,
-                token
+                user: userResponse
             }
         });
         session.endSession();
@@ -100,6 +105,11 @@ export const signIn = async (req, res, next) => {
             { expiresIn: process.env.JWT_EXPIRE_TIME }
         );
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict'
+        });
         // Remove password from response
         const userResponse = user.toObject();
         delete userResponse.password;
@@ -109,7 +119,6 @@ export const signIn = async (req, res, next) => {
             message: "User logged in successfully",
             data: {
                 user: userResponse,
-                token
             }
         });
     } catch (error) {

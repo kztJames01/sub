@@ -8,6 +8,7 @@ async function signUpUser(SignUpParams: SignUpUser): Promise<ApiResponse> {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(SignUpParams),
     });
 
@@ -29,6 +30,7 @@ async function signInUser(SignInParams: LoginUser): Promise<ApiResponse> {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(SignInParams),
     });
 
@@ -43,4 +45,22 @@ async function signInUser(SignInParams: LoginUser): Promise<ApiResponse> {
   }
 }
 
-export { signUpUser, signInUser };
+async function signOutUser(): Promise<ApiResponse> {
+  try {
+    const response = await fetch(`${apiBaseUrl}/auth/sign-out`, {
+      method: "POST",
+      credentials: 'include',
+    });
+
+    const data: ApiResponse = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Sign-out failed");
+    }
+    return data;
+  } catch (error) {
+    console.error('Error in signOutUser: ', error);
+    throw error;
+  }
+}
+
+export { signUpUser, signInUser, signOutUser };

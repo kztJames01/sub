@@ -1,26 +1,13 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { subscriptionSchema } from "@/lib/utils";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
 
 
-const AddSubscriptionForm = ({ onSubmit }: AdditionProps) => {
-  const form = useForm({
-    resolver: zodResolver(subscriptionSchema),
-    defaultValues: {
-      name: "",
-      price: 0,
-      currency: "USD",
-      frequency: "monthly",
-      category: "entertainment",
-      paymentMethod: "credit-card",
-      startDate: new Date().toISOString().split("T")[0],
-    },
-  });
+
+const AddSubscriptionForm = ({ onSubmit, form, loading}: AdditionProps) => {
 
   return (
     <Form {...form}>
@@ -139,7 +126,31 @@ const AddSubscriptionForm = ({ onSubmit }: AdditionProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="form-btn w-full">Add Subscription</Button>
+        <FormField
+          control={form.control}
+          name="startDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="form-label">Start Date</FormLabel>
+              <FormControl>
+                <Input
+                  className="form-input"
+                  type="date"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={loading} className="form-btn w-full">
+          {loading ?
+            <>
+              <Loader2 size={20} className='animate-spin mr-3' /> &nbsp;
+              Loading...
+            </>
+            : 'Add Subscription'}
+        </Button>
       </form>
     </Form>
   );
