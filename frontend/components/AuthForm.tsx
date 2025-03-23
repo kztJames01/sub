@@ -101,7 +101,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                             ) : (
                                 <>
                                     <Form {...form}>
-                                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 font-[family-name:var(--font-geist-mono)]">
+                                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
                                             {type === 'sign-up' && (
                                                 <>
 

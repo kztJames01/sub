@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import SubTable from "@/components/SubTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-hot-toast";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +20,7 @@ import BarChartComponent from "@/components/BarChart";
 import { subscriptionSchema } from "@/lib/utils";
 import Addition from "@/components/Addition";
 import { createSubscription } from "@/lib/subAPI";
-type Subscription = z.infer<typeof subscriptionSchema>;
+
 
 
 export default function Dashboard() {
@@ -27,7 +28,7 @@ export default function Dashboard() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
   const [loading, setIsLoading] = useState(false);
-  const form = useForm({
+  const form = useForm<z.infer<typeof subscriptionSchema>>({
     resolver: zodResolver(subscriptionSchema),
     defaultValues: {
       id: "",
@@ -43,40 +44,48 @@ export default function Dashboard() {
     },
   });
 
-  const onSubmit = async (data: Subscription) => {
+  const onSubmit = async (data: z.infer<typeof subscriptionSchema>) => {
+    console.log("onSubmit triggered");
+    const isValid = await form.trigger();
+  if (!isValid) {
+    console.log("Form validation errors:", form.formState.errors);
+    return;
+  }
     setIsLoading(true);
-    if (editingSubscription) {
-      const updatedSubscriptions = subscriptions.map((sub) =>
-        sub === editingSubscription ? data : sub
-      );
-      setSubscriptions(updatedSubscriptions);
-      setEditingSubscription(null);
-    } else {
-      const newSub = {
-        ...data,
-        id: `${data.name}-${data.startDate.toString()}`,
-        status: "active",
-      }
-      const startDate = new Date(data.startDate);
-      let renewalDate = new Date(startDate);
-
-      if (data.frequency === "monthly") {
-        renewalDate.setMonth(startDate.getMonth() + 1);
-      } else if (data.frequency === "yearly") {
-        renewalDate.setFullYear(startDate.getFullYear() + 1);
-      }
-
-      newSub.renewalDate = renewalDate.toISOString().split("T")[0];
-      try {
+    try {
+      if (editingSubscription) {
+        const updatedSubscriptions = subscriptions.map((sub) =>
+          sub === editingSubscription ? data : sub
+        );
+        setSubscriptions(updatedSubscriptions);
+        setEditingSubscription(null);
+      } else {
+        const newSub = {
+          ...data,
+          id: `${data.name}-${data.startDate.toString()}`,
+          status: "active",
+        };
+        const startDate = new Date(data.startDate);
+        let renewalDate = new Date(startDate);
+  
+        if (data.frequency === "monthly") {
+          renewalDate.setMonth(startDate.getMonth() + 1);
+        } else if (data.frequency === "yearly") {
+          renewalDate.setFullYear(startDate.getFullYear() + 1);
+        }
+  
+        newSub.renewalDate = renewalDate.toISOString().split("T")[0];
         const newSubscription = await createSubscription(newSub);
-        console.log("Created new sub");
-        setSubscriptions([...subscriptions, newSubscription]);
+        setSubscriptions([...subscriptions, newSubscription.data]);
         setIsDialogOpen(false);
         form.reset();
-      } catch (error) {
-        console.log(error)
-        console.error("Error creating subscription:", error);
+        toast.success("Subscription added successfully");
       }
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      toast.error("Failed to add subscription");
+    } finally {
+      setIsLoading(false);
     }
   };
 
